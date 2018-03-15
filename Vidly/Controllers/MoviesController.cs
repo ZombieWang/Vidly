@@ -9,6 +9,11 @@ namespace Vidly.Controllers
 {
         public class MoviesController : Controller
         {
+                public ActionResult ByReleaseDate(int year, int month)
+                {
+                        return Content(year + "/" + month); 
+                }
+
                 // GET: Movies
                 public ActionResult Random()
                 {
