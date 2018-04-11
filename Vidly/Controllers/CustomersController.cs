@@ -8,34 +8,39 @@ using System.Data.Entity;
 
 namespace Vidly.Controllers
 {
-        public class CustomersController : Controller
+    public class CustomersController : Controller
+    {
+        private ApplicationDbContext _context;
+
+        public CustomersController()
         {
-                private ApplicationDbContext _context;
+            _context = new ApplicationDbContext();
+        }
 
-                public CustomersController()
-                {
-                        _context = new ApplicationDbContext();
-                }
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
 
-                protected override void Dispose(bool disposing)
-                {
-                        _context.Dispose();
-                }
+        public ActionResult New()
+        {
+            return View();
+        }
 
-                public ViewResult Index()
-                {
-                        var customers = _context.Customers.Include(c => c.MembershipType).ToList();
+        public ViewResult Index()
+        {
+            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
 
-                        return View(customers);
-                }
+            return View(customers);
+        }
 
-                public ActionResult Details(int id)
-                {
+        public ActionResult Details(int id)
+        {
             var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
             if (customer == null)
-                                return HttpNotFound();
+                return HttpNotFound();
 
-                        return View(customer);
-                }
+            return View(customer);
         }
+    }
 }
